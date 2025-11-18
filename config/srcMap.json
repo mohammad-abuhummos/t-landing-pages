@@ -1,0 +1,15 @@
+{
+  "global": {
+    "1001": "L2P_VIP_Bathroom_C1",
+    "1002": "L2P_RC_Bathroom_C2"
+  },
+  "bathroom": {
+    "1001": "L2P_VIP_Bathroom_C1",
+    "1002": "L2P_RC_Bathroom_C2"
+  },
+  "windows": {
+    
+  },
+  "roofing": {},
+  "flooring": {}
+}

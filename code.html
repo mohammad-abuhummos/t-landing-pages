@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Renovate</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0661ea",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1723",
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Work Sans', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-800 dark:text-gray-200">
+<div class="min-h-screen flex flex-col">
+<header class="bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 text-primary">
+<svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-xl font-bold text-gray-900 dark:text-white">Renovate</h2>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Services</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Projects</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Reviews</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Financing</a>
+</nav>
+<div class="flex items-center">
+<button class="bg-primary text-white font-bold text-sm px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+                            Get Started
+                        </button>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-grow">
+<section class="relative bg-cover bg-center py-24 sm:py-32" style='background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6)), url("https://lh3.googleusercontent.com/aida-public/AB6AXuApyRVGm6F8P5fKxba6VhXnRq9uno_Xrg--ZutFF1pY7Fy7xVirhYihsXvZ99RZWfqN9hNhnFghXlPa5GyiuNwk5091xPi1s_s_JlGyU5FW41Cgom3IexXhaorSlk6RLZ6LCKOzfoEVLiQ-edQzYsirpko_uHsEPeJJ1rUa1ZP22nyVSO4xfIoDWz6LdVKkJM-7VfzRg2RxHirsBTZIaq8Tizd4ePZa4UTLMidBbiMfFYz7nWO1SoCfQEO4tuyHRVoxois37NJ-nXIQ");'>
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+<h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tighter">Transform Your Bathroom with Stunning New Features</h1>
+<p class="mt-4 max-w-3xl mx-auto text-lg sm:text-xl text-gray-200">
+                        Elevate your home with a bathroom that combines luxury and functionality. Our expert team delivers exceptional craftsmanship and personalized designs to create your dream space.
+                    </p>
+<button class="mt-8 bg-primary text-white font-bold text-base px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors">
+                        Get a Free Quote
+                    </button>
+</div>
+</section>
+<section class="bg-background-light dark:bg-background-dark py-16 sm:py-20">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
+<div class="lg:col-span-1">
+<div class="bg-white dark:bg-gray-900 p-8 rounded-xl shadow-lg">
+<h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Get a Free Quote Today!</h2>
+<form class="space-y-6">
+<div>
+<label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="zip">ZIP Code</label>
+<input class="mt-1 block w-full px-4 py-3 bg-gray-100 dark:bg-gray-800 border-transparent rounded-lg focus:ring-primary focus:border-primary" id="zip" name="zip" placeholder="Enter your ZIP code" type="text"/>
+</div>
+<div>
+<p class="text-sm font-medium text-gray-700 dark:text-gray-300">Do you own your home?</p>
+<div class="mt-2 flex gap-4">
+<label class="flex items-center px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 cursor-pointer has-[:checked]:border-primary has-[:checked]:ring-2 has-[:checked]:ring-primary flex-1 justify-center">
+<input class="sr-only" name="ownership" type="radio"/>
+<span class="text-sm font-medium">I own my home</span>
+</label>
+<label class="flex items-center px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 cursor-pointer has-[:checked]:border-primary has-[:checked]:ring-2 has-[:checked]:ring-primary flex-1 justify-center">
+<input class="sr-only" name="ownership" type="radio"/>
+<span class="text-sm font-medium">I rent</span>
+</label>
+</div>
+</div>
+<div>
+<p class="text-sm font-medium text-gray-700 dark:text-gray-300">What is the project type?</p>
+<div class="mt-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
+<label class="flex items-center px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 cursor-pointer has-[:checked]:border-primary has-[:checked]:ring-2 has-[:checked]:ring-primary justify-center">
+<input class="sr-only" name="project-type" type="radio"/>
+<span class="text-sm font-medium">Remodel</span>
+</label>
+<label class="flex items-center px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 cursor-pointer has-[:checked]:border-primary has-[:checked]:ring-2 has-[:checked]:ring-primary justify-center">
+<input class="sr-only" name="project-type" type="radio"/>
+<span class="text-sm font-medium">Addition</span>
+</label>
+<label class="flex items-center px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 cursor-pointer has-[:checked]:border-primary has-[:checked]:ring-2 has-[:checked]:ring-primary justify-center">
+<input class="sr-only" name="project-type" type="radio"/>
+<span class="text-sm font-medium">Other</span>
+</label>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+<div>
+<label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="first-name">First Name</label>
+<input class="mt-1 block w-full px-4 py-3 bg-gray-100 dark:bg-gray-800 border-transparent rounded-lg focus:ring-primary focus:border-primary" id="first-name" name="first-name" placeholder="John" type="text"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="last-name">Last Name</label>
+<input class="mt-1 block w-full px-4 py-3 bg-gray-100 dark:bg-gray-800 border-transparent rounded-lg focus:ring-primary focus:border-primary" id="last-name" name="last-name" placeholder="Doe" type="text"/>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="email">Email Address</label>
+<input class="mt-1 block w-full px-4 py-3 bg-gray-100 dark:bg-gray-800 border-transparent rounded-lg focus:ring-primary focus:border-primary" id="email" name="email" placeholder="you@example.com" type="email"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="phone">Phone Number</label>
+<input class="mt-1 block w-full px-4 py-3 bg-gray-100 dark:bg-gray-800 border-transparent rounded-lg focus:ring-primary focus:border-primary" id="phone" name="phone" placeholder="(123) 456-7890" type="tel"/>
+</div>
+<div class="flex items-start">
+<div class="flex items-center h-5">
+<input class="h-4 w-4 text-primary border-gray-300 dark:border-gray-600 rounded focus:ring-primary" id="consent" name="consent" type="checkbox"/>
+</div>
+<div class="ml-3 text-sm">
+<label class="text-gray-500 dark:text-gray-400" for="consent">
+                                                I agree to receive calls and messages from Renovate and its partners at the number provided. Consent is not required for purchase. Message and data rates may apply. See <a class="font-medium text-primary hover:underline" href="#">Terms</a> and <a class="font-medium text-primary hover:underline" href="#">Privacy Policy</a>.
+                                            </label>
+</div>
+</div>
+<div>
+<button class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" type="submit">
+                                            Get My Free Quote
+                                        </button>
+</div>
+</form>
+</div>
+</div>
+<div class="lg:col-span-1 space-y-8 lg:pt-8">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-8">
+<div class="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg flex items-center gap-4">
+<div class="bg-primary/10 text-primary p-3 rounded-full">
+<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.293 2.293a1 1 0 010 1.414L11.414 15.6a1 1 0 01-1.414 0L7.707 13.293a1 1 0 010-1.414L10 9.586M12 21a9 9 0 100-18 9 9 0 000 18z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<div>
+<p class="text-3xl font-bold text-gray-900 dark:text-white">300+</p>
+<p class="text-base text-gray-600 dark:text-gray-400">Bathrooms Remodeled</p>
+</div>
+</div>
+<div class="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg flex items-center gap-4">
+<div class="bg-primary/10 text-primary p-3 rounded-full">
+<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.539 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.539-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<div>
+<p class="text-3xl font-bold text-gray-900 dark:text-white">4.9/5.0</p>
+<p class="text-base text-gray-600 dark:text-gray-400">Customer Rating</p>
+</div>
+</div>
+<div class="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg flex items-center gap-4">
+<div class="bg-primary/10 text-primary p-3 rounded-full">
+<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<div>
+<p class="text-3xl font-bold text-gray-900 dark:text-white">24/7</p>
+<p class="text-base text-gray-600 dark:text-gray-400">Support Available</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="bg-background-light dark:bg-background-dark border-t border-gray-200 dark:border-gray-800">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="flex flex-col md:flex-row justify-between items-center">
+<p class="text-sm text-gray-500 dark:text-gray-400">© 2024 Renovate. All rights reserved.</p>
+<div class="flex gap-6 mt-4 md:mt-0">
+<a class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary" href="#">Privacy Policy</a>
+<a class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary" href="#">Terms of Service</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+
+</body></html>

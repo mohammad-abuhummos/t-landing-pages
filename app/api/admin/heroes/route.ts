@@ -1,0 +1,34 @@
+import { NextResponse } from "next/server";
+
+import { getCollection } from "@/lib/mongo";
+
+const PASSWORD = process.env.ADMIN_PASSWORD || "lead!123";
+
+export async function GET() {
+  const configs = await getCollection<{ _id: string; data: Record<string, string> }>("configs");
+  const doc = await configs.findOne({ _id: "heroes" });
+
+  return NextResponse.json(doc?.data || {});
+}
+
+export async function PUT(request: Request) {
+  const pwd = request.headers.get("x-admin-password");
+
+  if (pwd !== PASSWORD) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const body = await request.json().catch(() => null as any);
+
+  if (typeof body !== "object" || body === null) {
+    return NextResponse.json({ error: "Body must be an object" }, { status: 400 });
+  }
+  const configs = await getCollection("configs");
+
+  await configs.updateOne(
+    { _id: "heroes" },
+    { $set: { data: body, updatedAt: new Date() } },
+    { upsert: true }
+  );
+
+  return NextResponse.json({ ok: true });
+}
+
+

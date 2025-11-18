@@ -1,0 +1,27 @@
+
+> next-app-template@0.0.1 dev
+> next dev --turbopack --turbo --port 3000
+
+   ▲ Next.js 15.5.6 (Turbopack)
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.56.1:3000
+
+ ✓ Starting...
+ ✓ Ready in 4.6s
+ ○ Compiling / ...
+ ✓ Compiled / in 9.7s
+ GET / 200 in 11525ms
+ ○ Compiling /partners ...
+ ✓ Compiled /partners in 601ms
+ GET /partners 200 in 4384ms
+   ▲ Next.js 15.5.6 (Turbopack)
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.56.1:3000
+
+ ✓ Starting...
+ ✓ Ready in 2.1s
+ ○ Compiling /api/submit-windows-lead ...
+ ✓ Compiled /api/submit-windows-lead in 3.3s
+ OPTIONS /api/submit-windows-lead 204 in 4971ms
+   Reload env: .env
+Terminate batch job (Y/N)? [?25h
