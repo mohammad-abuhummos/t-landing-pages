@@ -1,25 +1,7 @@
 "use client";
 
 import Link from "next/link";
-
-
-function getDomainName() {
-    const vertical = process.env.NEXT_PUBLIC_LEAD_VERTICAL;
-
-    const domainMap: Record<string, string> = {
-        "roofing": "myhomeroof.net",
-        "new-roofing": "myhomeroof.net",
-        "bathroom": "bathroompros.co",
-        "new-bathroom": "bathroompros.co",
-        "flooring": "theflooringpros.co",
-        "new-flooring": "theflooringpros.co",
-        "solar": "myhomesolar.co",
-        "windows": "myhomewindows.net",
-        "new-windows": "myhomewindows.net",
-    };
-
-    return domainMap[vertical || ""] || "trafficom.co";
-}
+import { siteConfig } from "@/config/site";
 
 export default function Footer() {
     return (
@@ -28,11 +10,24 @@ export default function Footer() {
                 {/* Company Logo and Partners Link */}
                 <div className="flex flex-col items-center mb-10">
                     <Link className="flex flex-col items-center gap-3 mb-6 group transition-transform duration-200 hover:scale-105" href="/">
-                        {/* <AppLogo size={80} /> */}
                         <span className="text-2xl font-bold bg-gradient-to-r from-purple-900 via-purple-500 to-purple-300 bg-clip-text text-transparent">
-                            {getDomainName()}
+                            trafficom.co
                         </span>
                     </Link>
+                    
+                    {/* Services Links */}
+                    <div className="flex flex-wrap gap-6 justify-center mb-6">
+                        {siteConfig.navItems.map((item) => (
+                            <Link
+                                key={item.href}
+                                className="text-sm text-gray-400 hover:text-purple-300 transition-colors duration-200"
+                                href={item.href}
+                            >
+                                {item.label}
+                            </Link>
+                        ))}
+                    </div>
+
                     <Link
                         className="text-sm text-gray-400 transition-colors duration-200 hover:text-purple-300"
                         href="/partners"

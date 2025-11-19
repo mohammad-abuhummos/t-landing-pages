@@ -52,7 +52,6 @@ export const Navbar = () => {
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex gap-2 justify-start items-center" href="/">
-            <img alt="trafficom.co logo" className="w-10 h-10 rounded-md" src="/trafficom-icon-svg.svg" />
             <p className="text-xl font-bold text-inherit">trafficom.co</p>
           </NextLink>
         </NavbarBrand>
@@ -126,7 +125,7 @@ export const Navbar = () => {
                       ? "danger"
                       : "foreground"
                 }
-                href="#"
+                href={item.href}
                 size="lg"
               >
                 {item.label}

@@ -5,58 +5,46 @@ export const siteConfig = {
   description: "Make beautiful websites regardless of your design experience.",
   navItems: [
     {
-      label: "Home",
-      href: "/",
+      label: "Windows",
+      href: "https://fullhomeremodeling.us/windows",
     },
     {
-      label: "Docs",
-      href: "/docs",
+      label: "Bathroom",
+      href: "https://fullhomeremodeling.us/bathroom",
     },
     {
-      label: "Pricing",
-      href: "/pricing",
+      label: "Roofing",
+      href: "https://fullhomeremodeling.us/roofing",
     },
     {
-      label: "Blog",
-      href: "/blog",
+      label: "Flooring",
+      href: "https://fullhomeremodeling.us/flooring",
     },
     {
-      label: "About",
-      href: "/about",
+      label: "Solar",
+      href: "https://fullhomeremodeling.us/solar",
     },
   ],
   navMenuItems: [
     {
-      label: "Profile",
-      href: "/profile",
+      label: "Windows",
+      href: "https://fullhomeremodeling.us/windows",
     },
     {
-      label: "Dashboard",
-      href: "/dashboard",
+      label: "Bathroom",
+      href: "https://fullhomeremodeling.us/bathroom",
     },
     {
-      label: "Projects",
-      href: "/projects",
+      label: "Roofing",
+      href: "https://fullhomeremodeling.us/roofing",
     },
     {
-      label: "Team",
-      href: "/team",
+      label: "Flooring",
+      href: "https://fullhomeremodeling.us/flooring",
     },
     {
-      label: "Calendar",
-      href: "/calendar",
-    },
-    {
-      label: "Settings",
-      href: "/settings",
-    },
-    {
-      label: "Help & Feedback",
-      href: "/help-feedback",
-    },
-    {
-      label: "Logout",
-      href: "/logout",
+      label: "Solar",
+      href: "https://fullhomeremodeling.us/solar",
     },
   ],
   links: {
