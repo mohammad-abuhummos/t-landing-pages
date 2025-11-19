@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { siteConfig } from "@/config/site";
+import { Button } from "@heroui/button";
 
 export default function Footer() {
     return (
@@ -28,20 +29,24 @@ export default function Footer() {
                         ))}
                     </div>
 
-                    <Link
-                        className="text-sm text-gray-400 transition-colors duration-200 hover:text-purple-300"
+                    <Button
+                        as={Link}
+                        className="text-sm font-medium text-white bg-purple-600/20 hover:bg-purple-600/40 border border-purple-500/30"
                         href="/partners"
+                        variant="flat"
+                        radius="full"
                     >
                         View Our Partners
-                    </Link>
+                    </Button>
                 </div>
 
                 {/* Legal Links */}
-                <div className="flex flex-wrap gap-6 justify-center mb-8">
-                    <Link className="text-sm text-gray-400 hover:text-purple-300 transition-colors duration-200" href="/privacy-policy">
+                <div className="flex flex-wrap gap-4 justify-center items-center mb-8 text-xs text-gray-500">
+                    <Link className="hover:text-purple-300 transition-colors duration-200" href="/privacy-policy">
                         Privacy Policy
                     </Link>
-                    <Link className="text-sm text-gray-400 hover:text-purple-300 transition-colors duration-200" href="/terms-and-conditions">
+                    <span className="w-1 h-1 rounded-full bg-gray-700"></span>
+                    <Link className="hover:text-purple-300 transition-colors duration-200" href="/terms-and-conditions">
                         Terms of Service
                     </Link>
                 </div>
