@@ -1,166 +1,228 @@
 /* eslint-disable padding-line-between-statements */
 import { NextRequest, NextResponse } from 'next/server';
 
-import { getCollection } from '@/lib/mongo';
+const LEADPROSPER_WINDOWS_CONFIG = {
+    campaignId: process.env.LEADPROSPER_WINDOWS_CAMPAIGN_ID ?? '31256',
+    supplierId: process.env.LEADPROSPER_WINDOWS_SUPPLIER_ID ?? '97777',
+    key: process.env.LEADPROSPER_WINDOWS_KEY ?? '6l5ocd00xcgqjq',
+    action: process.env.LEADPROSPER_WINDOWS_ACTION ?? '',
+    defaultSubId1: process.env.LEADPROSPER_WINDOWS_SUBID1 ?? 'default',
+    defaultSubId2: process.env.LEADPROSPER_WINDOWS_SUBID2 ?? 'default',
+};
+
+const ALLOWED_WINDOW_COUNTS = new Set(['1', '2', '3-5', '6-9', '10+']);
+const ALLOWED_PROJECT_TYPES = new Set(['Installation', 'Replacement', 'Repair']);
+const ALLOWED_HOMEOWNER_VALUES = new Set(['Yes', 'No']);
+
+const sanitizeSubId = (value: unknown, fallback: string) => {
+    const subId = (value ?? '').toString().trim();
+    return (subId || fallback).slice(0, 75);
+};
+
+const normalizePhone = (value: string) => value.replace(/\D/g, '');
+
+const mapWindowCount = (value: string) => {
+    if (ALLOWED_WINDOW_COUNTS.has(value)) {
+        return value;
+    }
+
+    const normalized = (value || '').toLowerCase();
+    if (normalized.includes('10')) return '10+';
+    if (normalized.includes('6')) return '6-9';
+    if (normalized.includes('5')) return '3-5';
+    if (normalized.includes('2')) return '2';
+    return '1';
+};
+
+const mapProjectType = (projectType: string) => {
+    if (ALLOWED_PROJECT_TYPES.has(projectType)) {
+        return projectType;
+    }
+
+    const normalized = (projectType || '').toLowerCase();
+    if (normalized.includes('install')) return 'Installation';
+    if (normalized.includes('repair')) return 'Repair';
+    return 'Replacement';
+};
+
+const mapHomeowner = (value: string) => (ALLOWED_HOMEOWNER_VALUES.has(value) ? value : 'No');
+
+const detectClientIp = (request: NextRequest) =>
+    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+    || request.headers.get('x-real-ip')
+    || request.headers.get('cf-connecting-ip')
+    || request.headers.get('x-client-ip')
+    || request.headers.get('fastly-client-ip')
+    || request.headers.get('remote-addr')
+    || '0.0.0.0';
+
+const detectUserAgent = (request: NextRequest) =>
+    request.headers.get('user-agent')
+    || request.headers.get('User-Agent')
+    || 'unknown';
 
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
 
-        // Validate required fields
         const requiredFields = [
-            'firstName', 'lastName', 'phone', 'email', 'zipCode', 'state',
-            'homeOwnership', 'windowCount', 'projectType'
+            'firstName',
+            'lastName',
+            'phone',
+            'email',
+            'zipCode',
+            'state',
+            'homeOwnership',
+            'windowCount',
+            'projectType',
+            'address',
+            'city',
         ];
 
         const missingFields = requiredFields.filter(field => !body[field]);
-
         if (missingFields.length > 0) {
             return NextResponse.json(
                 { error: `Missing required fields: ${missingFields.join(', ')}` },
-                { status: 400 }
+                { status: 400 },
             );
         }
 
-        // Validate TCPA consent
         if (!body.tcpaConsent) {
             return NextResponse.json(
                 { error: 'TCPA consent is required' },
-                { status: 400 }
+                { status: 400 },
             );
         }
 
-        // Capture client IP address from request headers
-        const clientIP = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-            request.headers.get('x-real-ip') ||
-            request.headers.get('cf-connecting-ip') || // Cloudflare
-            request.headers.get('x-client-ip') ||
-            'unknown';
-
-        console.log('Client IP detected:', clientIP);
-
-        // Debug user-agent headers
-        const userAgent = request.headers.get('user-agent') ||
-            request.headers.get('User-Agent') ||
-            request.headers.get('USER-AGENT') || '';
-
-        console.log('User-Agent detected:', userAgent);
-        console.log('All headers:', Object.fromEntries(request.headers.entries()));
-
-        // Prepare lead data
-        const leadData = {
-            // Personal Information
-            firstName: body.firstName,
-            lastName: body.lastName,
-            phone: body.phone,
-            email: body.email,
-
-            // Location
-            zipCode: body.zipCode,
-            state: body.state,
-            city: body.city || null,
-            address: body.address || null,
-
-            // Project Details
-            homeOwnership: body.homeOwnership,
-            windowCount: body.windowCount,
-            projectType: body.projectType,
-
-            // Compliance
-            tcpaConsent: process.env.NEXT_PUBLIC_TCPA,
-            trustedFormToken: body.trustedFormToken || '',
-            jornayaLeadId: body.leadidToken || '',
-
-            landingPage: body.landingPage,
-            // URL Parameters
-            s1: body.s1 || '',
-            s2: body.s2 || '',
-            s3: body.s3 || '',
-            // Metadata
-            submittedAt: body.submittedAt || new Date().toISOString(),
-            source: 'windows_landing_page',
-            userAgent: userAgent,
-            ipAddress: clientIP,
-        };
-
-        // Log the lead (in production, you'd save to database or send to CRM)
-        // console.log('New lead submitted:', leadData);
-
-        // Here you would typically:
-        // 1. Save to your database
-        // 2. Send to your CRM system  
-        // 3. Send email notifications
-        // 4. Integrate with other marketing tools
-
-        // Example: Send to external CRM or lead management system
-        // await sendToCRM(leadData);
-
-        // Prepare trafficom.co API data
-        console.log('Client IP detected:', clientIP);
-        // Resolve SRC from s1 mapping (windows vertical), fallback to env
-        const s1Value = (leadData.s1 || '').toString();
-        const configs = await getCollection<{ _id: string; data: Record<string, any> }>('configs');
-        const srcDoc = await configs.findOne({ _id: 'srcMap' });
-        const runtimeSrcMap = (srcDoc?.data || {}) as Record<string, any>;
-        const mappedSrc = (runtimeSrcMap as any).windows?.[s1Value] || (runtimeSrcMap as any).global?.[s1Value] || process.env.LEAD_API_SRC || 'trafficom-FB1';
-        const leadApiData = {
-            Request: {
-                Key: body.Key || process.env.LEAD_API_KEY,
-                API_Action: body.API_Action || 'pingPostLead',
-                Mode: body.Mode || 'full',
-                TYPE: body.TYPE || '35',
-                SRC: body.SRC || mappedSrc,
-                Address: leadData.address,
-                City: leadData.city,
-                IP_Address: clientIP,
-                Email: leadData.email,
-                First_Name: leadData.firstName,
-                Landing_Page: leadData.landingPage,
-                Last_Name: leadData.lastName,
-                Homeowner: leadData.homeOwnership,
-                Number_Of_Windows: leadData.windowCount,
-                Primary_Phone: leadData.phone,
-                Project_Type: leadData.projectType,
-                State: leadData.state,
-                Zip: leadData.zipCode,
-                TCPA_Language: leadData.tcpaConsent,
-                Trusted_Form_URL: leadData.trustedFormToken,
-                LeadiD_Token: body.leadidToken || leadData.jornayaLeadId,
-                User_Agent: userAgent,
-            }
-        };
-        console.log(leadApiData);
-        // Call Boberdoo (trafficom.co) API and proxy back the response
-        const leadApiResponse = await fetch("https://trafficom.leadportal.com/apiJSON.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(leadApiData),
-        });
-
-        const responseText = await leadApiResponse.text();
-        try {
-            const json = JSON.parse(responseText);
-            return NextResponse.json(json, { status: leadApiResponse.status });
-        } catch {
-            return new NextResponse(responseText, {
-                status: leadApiResponse.status,
-                headers: { "Content-Type": "text/plain" },
-            });
+        const tcpaText = process.env.NEXT_PUBLIC_TCPA;
+        if (!tcpaText) {
+            return NextResponse.json(
+                { error: 'TCPA text is not configured on the server' },
+                { status: 500 },
+            );
         }
 
+        const trustedFormToken = body.trustedFormToken || '';
+        if (!trustedFormToken) {
+            return NextResponse.json(
+                { error: 'TrustedForm certificate URL is required' },
+                { status: 400 },
+            );
+        }
+
+        const jornayaLeadId = body.leadidToken || '';
+        if (!jornayaLeadId) {
+            return NextResponse.json(
+                { error: 'Jornaya LeadID token is required' },
+                { status: 400 },
+            );
+        }
+
+        const landingPageUrl = body.landingPage || request.headers.get('referer') || '';
+        if (!landingPageUrl) {
+            return NextResponse.json(
+                { error: 'Landing page URL is required' },
+                { status: 400 },
+            );
+        }
+
+        const zipCode = (body.zipCode ?? '').toString().trim();
+        if (!/^\d{5}$/.test(zipCode)) {
+            return NextResponse.json(
+                { error: 'ZIP code must be a 5-digit value' },
+                { status: 400 },
+            );
+        }
+
+        const normalizedPhone = normalizePhone(body.phone || '');
+        if (normalizedPhone.length < 10) {
+            return NextResponse.json(
+                { error: 'Phone number must contain at least 10 digits' },
+                { status: 400 },
+            );
+        }
+        const formattedPhone = normalizedPhone.slice(-10);
+
+        const state = (body.state || '').toString().trim().toUpperCase();
+        if (!/^[A-Z]{2}$/.test(state)) {
+            return NextResponse.json(
+                { error: 'State must be a valid 2-letter abbreviation' },
+                { status: 400 },
+            );
+        }
+
+        const lpSubId1 = sanitizeSubId(body.s1 ?? body.lp_subid1, LEADPROSPER_WINDOWS_CONFIG.defaultSubId1);
+        const lpSubId2 = sanitizeSubId(
+            body.s2 ?? body.lp_subid2 ?? body.s3,
+            LEADPROSPER_WINDOWS_CONFIG.defaultSubId2,
+        );
+        const lpAction = (body.lp_action ?? LEADPROSPER_WINDOWS_CONFIG.action).toString().trim();
+
+        const payload: Record<string, string> = {
+            lp_campaign_id: LEADPROSPER_WINDOWS_CONFIG.campaignId,
+            lp_supplier_id: LEADPROSPER_WINDOWS_CONFIG.supplierId,
+            lp_key: LEADPROSPER_WINDOWS_CONFIG.key,
+            lp_subid1: lpSubId1,
+            lp_subid2: lpSubId2,
+            first_name: body.firstName.toString().trim(),
+            last_name: body.lastName.toString().trim(),
+            email: body.email.toString().trim(),
+            phone: formattedPhone,
+            address: body.address.toString().trim(),
+            city: body.city.toString().trim(),
+            state,
+            zip_code: zipCode,
+            ip_address: detectClientIp(request),
+            user_agent: detectUserAgent(request),
+            landing_page_url: landingPageUrl,
+            jornaya_leadid: jornayaLeadId,
+            trustedform_cert_url: trustedFormToken,
+            tcpa_text: tcpaText,
+            number_of_windows: mapWindowCount(body.windowCount),
+            type_of_project: mapProjectType(body.projectType),
+            homeowner: mapHomeowner(body.homeOwnership),
+        };
+
+        if (lpAction) {
+            payload.lp_action = lpAction;
+        }
+
+        if (body.ip_address) {
+            payload.ip_address = body.ip_address.toString();
+        }
+
+        if (body.user_agent) {
+            payload.user_agent = body.user_agent.toString();
+        }
+
+        const response = await fetch('https://api.leadprosper.io/direct_post', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+        });
+
+        const responseText = await response.text();
+        try {
+            const json = JSON.parse(responseText);
+            return NextResponse.json(json, { status: response.status });
+        } catch {
+            return new NextResponse(responseText, {
+                status: response.status,
+                headers: { 'Content-Type': 'text/plain' },
+            });
+        }
     } catch (error) {
-        console.error("Server error:", error);
+        console.error('LeadProsper windows submission failed:', error);
         return NextResponse.json(
-            { error: "Failed to submit lead" },
-            { status: 500 }
+            { error: 'Failed to submit lead' },
+            { status: 500 },
         );
     }
 }
 
-// Optional: Add GET method for testing
 export async function GET() {
     return NextResponse.json({
-        message: 'Lead submission endpoint is working',
-        timestamp: new Date().toISOString()
+        message: 'Windows LeadProsper endpoint is online',
+        timestamp: new Date().toISOString(),
     });
-} 
+}

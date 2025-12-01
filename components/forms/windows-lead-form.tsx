@@ -33,7 +33,7 @@ export default function WindowsLeadForm() {
         zipCode: "",
         city: "",
         state: "",
-        homeOwnership: "Yes",
+        homeOwnership: "",
         windowCount: "",
         projectType: "",
         tcpaConsent: false,
@@ -397,9 +397,8 @@ export default function WindowsLeadForm() {
     );
 
     const homeOwnershipOptions = [
-        { value: "Yes", label: "Yes" },
-        { value: "No", label: "No" },
-        { value: "Authorized to make changes", label: "Authorized to make changes" },
+        { value: "Yes", label: "Yes, I own this home" },
+        { value: "No", label: "No, I rent or lease" },
     ];
 
     const windowCountOptions = [

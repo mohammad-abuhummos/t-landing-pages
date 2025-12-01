@@ -370,20 +370,14 @@ export default function BathLeadForm() {
     );
 
     const homeOwnershipOptions = [
-        { value: "Yes", label: "Yes" },
-        { value: "No", label: "No" },
-        { value: "Authorized to make changes", label: "Authorized to make changes" },
+        { value: "Yes", label: "Yes, I own this home" },
+        { value: "No", label: "No, I rent or lease" },
     ];
 
     const projectTypeOptions = [
         { value: "Full Bathroom Remodeling", label: "Full Bathroom Remodeling" },
-        { value: "Bath", label: "Bath" },
-        { value: "Shower", label: "Shower" },
-        { value: "Flooring", label: "Flooring" },
-        { value: "Sinks", label: "Sinks" },
-        { value: "Toilets", label: "Toilets" },
-        { value: "Cabinets", label: "Cabinets" },
-        { value: "Counter Tops", label: "Counter Tops" },
+        { value: "Bath", label: "Bath / Tub Upgrade" },
+        { value: "Shower", label: "Shower Remodel" },
     ];
 
     const usStates = [

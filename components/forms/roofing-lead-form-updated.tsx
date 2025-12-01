@@ -33,7 +33,7 @@ export default function RoofingLeadForm() {
         zipCode: "",
         city: "",
         state: "",
-        homeOwnership: "Yes",
+        homeOwnership: "",
         projectType: "",
         propertyType: "Single Family Home",
         roofType: "",
@@ -381,9 +381,8 @@ export default function RoofingLeadForm() {
     );
 
     const homeOwnershipOptions = [
-        { value: "Yes", label: "Yes" },
-        { value: "No", label: "No" },
-        { value: "Authorized to make changes", label: "Authorized to make changes" },
+        { value: "Yes", label: "Yes, I own this home" },
+        { value: "No", label: "No, I rent or lease" },
     ];
 
     const projectTypeOptions = [
@@ -400,7 +399,8 @@ export default function RoofingLeadForm() {
         { value: "Asphalt Shingles", label: "Asphalt Shingles" },
         { value: "Metal", label: "Metal" },
         { value: "Tile", label: "Tile" },
-        { value: "Cedar Shake", label: "Cedar Shake" },
+        { value: "Wood Shake", label: "Wood Shake" },
+        { value: "Composite", label: "Composite" },
         { value: "Natural Slate", label: "Natural Slate" },
     ];
 

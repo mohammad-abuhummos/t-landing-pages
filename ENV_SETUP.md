@@ -5,17 +5,20 @@ This document explains the environment variables needed for the Landing Page app
 ## Required Environment Variables
 
 ### MongoDB
+
 ```bash
 MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/database?retryWrites=true&w=majority
 ```
 
 ### Admin Dashboard
+
 ```bash
 ADMIN_PASSWORD=lead!123
 NEXT_PUBLIC_ADMIN_PASSWORD=lead!123
 ```
 
 ### PHP Uploader Service
+
 The app uses an external PHP microservice for image uploads. Configure it with:
 
 ```bash
@@ -28,14 +31,45 @@ UPLOADER_DIR=heroes
 ```
 
 ### Railway Volume (for this Next.js app)
+
 ```bash
 DATA_DIR=/data
 ```
 
 ### Optional: Analytics
+
 ```bash
 NEXT_PUBLIC_GTM_ID=GTM-XXXXXXX
 NEXT_PUBLIC_SMARTLOOK_KEY=your-smartlook-key
+
+# TCPA text rendered on every lead form disclosure
+NEXT_PUBLIC_TCPA="By clicking ‘Submit’ I agree..."
+
+# LeadProsper bathroom campaign credentials
+LEADPROSPER_CAMPAIGN_ID=31308
+LEADPROSPER_SUPPLIER_ID=97682
+LEADPROSPER_KEY=z6nzcnx16slx5v
+# Optional overrides
+LEADPROSPER_ACTION=send test
+LEADPROSPER_DEFAULT_SUBID=organic
+
+# LeadProsper windows campaign credentials
+LEADPROSPER_WINDOWS_CAMPAIGN_ID=31256
+LEADPROSPER_WINDOWS_SUPPLIER_ID=97777
+LEADPROSPER_WINDOWS_KEY=6l5ocd00xcgqjq
+# Required sub IDs (75 char max)
+LEADPROSPER_WINDOWS_SUBID1=organic
+LEADPROSPER_WINDOWS_SUBID2=display
+# Optional overrides
+LEADPROSPER_WINDOWS_ACTION=send test
+
+# LeadProsper roofing campaign credentials
+LEADPROSPER_ROOFING_CAMPAIGN_ID=31310
+LEADPROSPER_ROOFING_SUPPLIER_ID=97776
+LEADPROSPER_ROOFING_KEY=6l5ocd0xougqje
+LEADPROSPER_ROOFING_SUBID1=organic
+LEADPROSPER_ROOFING_SUBID2=
+LEADPROSPER_ROOFING_ACTION=send test
 ```
 
 ---
@@ -45,11 +79,13 @@ NEXT_PUBLIC_SMARTLOOK_KEY=your-smartlook-key
 Your PHP uploader is a **separate Railway service**. It needs these configurations:
 
 ### 1. Create a Volume
+
 1. In Railway, go to your PHP uploader service
 2. Create a new Volume named `data`
 3. Mount it at `/data`
 
 ### 2. Set Environment Variables on PHP Uploader Service
+
 ```bash
 # Storage location (must match volume mount)
 STORAGE_DIR=/data
@@ -65,6 +101,7 @@ BASE_URL=https://your-php-uploader.up.railway.app
 ```
 
 ### 3. Verify the Volume is Mounted
+
 - The volume **must** be mounted at `/data`
 - The `STORAGE_DIR` env var **must** match the mount path
 - Check Railway's service settings → Variables → Volume
@@ -76,14 +113,19 @@ BASE_URL=https://your-php-uploader.up.railway.app
 If images upload successfully but don't display:
 
 ### Check 1: Verify PHP Uploader Health
+
 Visit your PHP uploader in a browser:
+
 ```
 https://your-php-uploader.up.railway.app/
 ```
+
 You should see an upload form.
 
 ### Check 2: Test File Access
+
 After uploading an image, try accessing it directly:
+
 ```
 https://your-php-uploader.up.railway.app/files/test_bath-20251015132132-74f9fc87.jpg
 ```
@@ -91,24 +133,30 @@ https://your-php-uploader.up.railway.app/files/test_bath-20251015132132-74f9fc87
 If you get a 404, the issue is with the PHP service storage configuration.
 
 ### Check 3: Verify Volume Mount
+
 SSH into your Railway PHP service (if possible) or check logs:
+
 - The `/data` directory should exist
 - Uploaded files should be in `/data/` or `/data/heroes/` (depending on the `dir` parameter)
 
 ### Check 4: Common Issues
 
 #### Issue: Images upload but return 404
+
 **Cause**: Volume not mounted or `STORAGE_DIR` mismatch
-**Solution**: 
+**Solution**:
+
 1. Ensure Volume is mounted at `/data` in Railway
 2. Set `STORAGE_DIR=/data` environment variable
 3. Restart the PHP uploader service
 
 #### Issue: CORS errors when uploading
+
 **Cause**: `CORS_ALLOW_ORIGIN` not set correctly
 **Solution**: Set `CORS_ALLOW_ORIGIN` to your Next.js app's URL
 
 #### Issue: "Uploader not configured" error
+
 **Cause**: `UPLOADER_URL` not set in Next.js app
 **Solution**: Add `UPLOADER_URL` environment variable to your Next.js Railway service
 
@@ -117,6 +165,7 @@ SSH into your Railway PHP service (if possible) or check logs:
 ## Testing the Integration
 
 ### From your Next.js Dashboard
+
 1. Go to `/dashboard`
 2. Login with your admin password
 3. Upload an image in the "Images" section
@@ -125,12 +174,14 @@ SSH into your Railway PHP service (if possible) or check logs:
 6. Test the URL in a new browser tab
 
 ### Using cURL (direct to PHP uploader)
+
 ```bash
 curl -F "file=@/path/to/image.jpg" -F "dir=heroes" \
   https://your-php-uploader.up.railway.app/
 ```
 
 Expected response:
+
 ```json
 {
   "url": "https://your-php-uploader.up.railway.app/files/heroes/image-20251015123456-abc123.jpg",
@@ -142,9 +193,9 @@ Expected response:
 ```
 
 Then verify the URL works:
+
 ```bash
 curl -I https://your-php-uploader.up.railway.app/files/heroes/image-20251015123456-abc123.jpg
 ```
 
 Should return `HTTP 200 OK` with `Content-Type: image/jpeg`
-
