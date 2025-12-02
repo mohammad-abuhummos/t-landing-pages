@@ -45,7 +45,7 @@ export default function RoofingLeadForm() {
     const [landingPage, setLandingPage] = useState("");
     const [clientIP, setClientIP] = useState("");
     const [errors, setErrors] = useState<Record<string, string>>({});
-    const [urlParams, setUrlParams] = useState({ s1: "", s2: "", s3: "" });
+    const [urlParams, setUrlParams] = useState({ s1: "", s2: "", s3: "", tid: "" });
 
     const formRef = useRef<HTMLFormElement>(null);
     const continueButtonRef = useRef<HTMLButtonElement>(null);
@@ -68,8 +68,9 @@ export default function RoofingLeadForm() {
         const s1 = searchParams.get('s1') || '';
         const s2 = searchParams.get('s2') || '';
         const s3 = searchParams.get('s3') || '';
+        const tid = searchParams.get('tid') || '';
 
-        setUrlParams({ s1, s2, s3 });
+        setUrlParams({ s1, s2, s3, tid });
         console.log('URL Parameters captured:', { s1, s2, s3 });
 
         // Capture landing page URL
@@ -345,6 +346,7 @@ export default function RoofingLeadForm() {
             s1: urlParams.s1,
             s2: urlParams.s2,
             s3: urlParams.s3,
+            tid: urlParams.tid,
         };
 
         try {

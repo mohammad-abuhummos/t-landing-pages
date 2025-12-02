@@ -47,6 +47,8 @@ const mapProjectType = (projectType: string) => {
 
 const mapHomeowner = (value: string) => (ALLOWED_HOMEOWNER_VALUES.has(value) ? value : 'No');
 
+const sanitizeTid = (value: unknown) => (value ?? '').toString().trim().slice(0, 100);
+
 const detectClientIp = (request: NextRequest) =>
     request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
     || request.headers.get('x-real-ip')
@@ -157,6 +159,7 @@ export async function POST(request: NextRequest) {
             LEADPROSPER_WINDOWS_CONFIG.defaultSubId2,
         );
         const lpAction = (body.lp_action ?? LEADPROSPER_WINDOWS_CONFIG.action).toString().trim();
+        const tid = sanitizeTid(body.tid);
 
         const payload: Record<string, string> = {
             lp_campaign_id: LEADPROSPER_WINDOWS_CONFIG.campaignId,
@@ -193,6 +196,10 @@ export async function POST(request: NextRequest) {
 
         if (body.user_agent) {
             payload.user_agent = body.user_agent.toString();
+        }
+
+        if (tid) {
+            payload.tid = tid;
         }
 
         const response = await fetch('https://api.leadprosper.io/direct_post', {
