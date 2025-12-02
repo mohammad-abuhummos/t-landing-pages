@@ -69,8 +69,6 @@ export default function WindowsLeadForm() {
         const s3 = searchParams.get('s3') || '';
 
         setUrlParams({ s1, s2, s3 });
-        console.log('URL Parameters captured:', { s1, s2, s3 });
-
         // Capture landing page URL
         setLandingPage(window.location.href);
 
@@ -80,7 +78,6 @@ export default function WindowsLeadForm() {
             .then(data => setClientIP(data.ip))
             .catch(() => {
                 // Fallback - server will detect IP from headers
-                console.log('Could not fetch client IP, server will detect it');
             });
 
         // TrustedForm integration
@@ -372,7 +369,6 @@ export default function WindowsLeadForm() {
                 body: JSON.stringify(submissionData),
             });
 
-            console.log(response)
             if (response.status == 200) {
                 // Redirect to thank you page
                 router.push('/thank-you');
@@ -380,7 +376,7 @@ export default function WindowsLeadForm() {
                 throw new Error("Submission failed");
             }
         } catch (error) {
-            console.error("Form submission error:", error);
+            void error;
             const submitError = { submit: "There was an error submitting your request. Please try again." };
 
             setErrors(submitError);
@@ -423,28 +419,33 @@ export default function WindowsLeadForm() {
         "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY",
     ];
 
-    // Enhanced step indicator with modern UI
-    const renderStepIndicator = () => (
-        <div className="mb-2">
-            <div className="mt-2">
-                <div className="overflow-hidden mx-auto max-w-md h-2 bg-gray-200 rounded-full">
-                    <div
-                        className="h-full bg-gradient-to-r from-purple-900 to-purple-900 transition-all duration-500 ease-out"
-                        style={{ width: `${(currentStep / 6) * 100}%` }}
-                    />
-                    <p className="mt-3 text-sm font-medium text-center text-gray-500">
-                        Step {currentStep} of 6
-                    </p>
+    const renderStepIndicator = () => {
+        const progressPercent = (currentStep / 6) * 100;
+
+        return (
+            <div className="mb-6 space-y-3">
+                <div className="flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.3em] text-slate-400">
+                    <span>guided quote</span>
+                    <span>{Math.round(progressPercent)}% complete</span>
                 </div>
+                <div className="overflow-hidden w-full h-2 rounded-full bg-slate-200/80">
+                    <div
+                        className="h-full bg-gradient-to-r from-blue-700 via-blue-600 to-sky-400 transition-all duration-500 ease-out"
+                        style={{ width: `${progressPercent}%` }}
+                    />
+                </div>
+                <p className="text-sm font-medium text-center text-slate-600 sm:text-left">
+                    Step {currentStep} of 6 - under 2 minutes to finish.
+                </p>
             </div>
-        </div>
-    );
+        );
+    };
 
     // Step 1: Location (Zip Code) - Enhanced UI
     const renderStep1 = () => (
         <div className="mx-auto space-y-8 max-w-sm text-center">
             <div className="space-y-3">
-                <h3 className="text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-900 to-purple-700">
+                <h3 className="text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-900 to-sky-600">
                     Where are you located?
                 </h3>
                 <p className="text-sm text-gray-600">
@@ -460,7 +461,7 @@ export default function WindowsLeadForm() {
                     <input
                         className={`px-5 py-3.5 w-full text-2xl font-semibold text-center rounded-xl shadow-sm backdrop-blur-sm transition-all duration-150 outline-none border-2 focus:ring-2 hover:shadow bg-white/50 ${errors.zipCode
                             ? 'border-red-300 focus:border-red-500 focus:ring-red-100'
-                            : 'border-gray-200 focus:border-purple-500 focus:ring-purple-100'
+                            : 'border-gray-200 focus:border-blue-500 focus:ring-blue-100'
                             }`}
                         id="zipCodeInput"
                         maxLength={5}
@@ -475,7 +476,7 @@ export default function WindowsLeadForm() {
                 <button
                     ref={continueButtonRef}
                     className={`w-full py-3.5 px-5 text-base font-semibold rounded-xl transition-all duration-150 transform ${canProceedStep1()
-                        ? 'text-white bg-gradient-to-r from-purple-900 to-purple-900 shadow hover:from-purple-700 hover:to-purple-800 hover:shadow-md hover:scale-[1.02]'
+                        ? 'text-white bg-gradient-to-r from-blue-700 via-blue-600 to-sky-500 shadow hover:from-blue-600 hover:to-sky-500 hover:shadow-lg hover:scale-[1.02]'
                         : 'text-gray-400 bg-gray-200 cursor-not-allowed'
                         }`}
                     disabled={!canProceedStep1()}
@@ -492,7 +493,7 @@ export default function WindowsLeadForm() {
     const renderStep2 = () => (
         <div className="mx-auto space-y-8 max-w-md text-center">
             <div className="space-y-3">
-                <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-900 to-purple-700">
+                <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-900 to-sky-600">
                     Do you own your home?
                 </h3>
                 <p className="text-lg text-gray-600">
@@ -505,8 +506,8 @@ export default function WindowsLeadForm() {
                     <button
                         key={option.value}
                         className={`p-4 w-full text-left rounded-xl border transition-all duration-150 hover:shadow ${formData.homeOwnership === option.value
-                            ? 'border-purple-500 bg-purple-50 text-purple-700'
-                            : 'border-gray-200 bg-white hover:border-purple-300'
+                            ? 'border-blue-500 bg-blue-50 text-blue-700'
+                            : 'border-gray-200 bg-white hover:border-blue-300'
                             }`}
                         type="button"
                         onClick={() => {
@@ -518,7 +519,7 @@ export default function WindowsLeadForm() {
                         <div className="flex justify-between items-center">
                             <span className="text-lg font-medium">{option.label}</span>
                             {formData.homeOwnership === option.value && (
-                                <div className="flex justify-center items-center w-6 h-6 bg-purple-500 rounded-full">
+                                <div className="flex justify-center items-center w-6 h-6 bg-blue-500 rounded-full">
                                     <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
                                         <path clipRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fillRule="evenodd" />
                                     </svg>
@@ -546,7 +547,7 @@ export default function WindowsLeadForm() {
     const renderStep3 = () => (
         <div className="mx-auto space-y-8 max-w-md text-center">
             <div className="space-y-3">
-                <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-900 to-purple-700">
+                <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-900 to-sky-600">
                     How many windows?
                 </h3>
                 <p className="text-lg text-gray-600">
@@ -559,8 +560,8 @@ export default function WindowsLeadForm() {
                     <button
                         key={option.value}
                         className={`p-4 w-full text-left rounded-xl border transition-all duration-150 hover:shadow ${formData.windowCount === option.value
-                            ? 'border-purple-500 bg-purple-50 text-purple-700'
-                            : 'border-gray-200 bg-white hover:border-purple-300'
+                            ? 'border-blue-500 bg-blue-50 text-blue-700'
+                            : 'border-gray-200 bg-white hover:border-blue-300'
                             }`}
                         type="button"
                         onClick={() => {
@@ -572,7 +573,7 @@ export default function WindowsLeadForm() {
                         <div className="flex justify-between items-center">
                             <span className="text-lg font-medium">{option.label} window{option.value !== '1' ? 's' : ''}</span>
                             {formData.windowCount === option.value && (
-                                <div className="flex justify-center items-center w-6 h-6 bg-purple-500 rounded-full">
+                                <div className="flex justify-center items-center w-6 h-6 bg-blue-500 rounded-full">
                                     <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
                                         <path clipRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fillRule="evenodd" />
                                     </svg>
@@ -600,7 +601,7 @@ export default function WindowsLeadForm() {
     const renderStep4 = () => (
         <div className="mx-auto space-y-8 max-w-md text-center">
             <div className="space-y-3">
-                <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-900 to-purple-700">
+                <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-900 to-sky-600">
                     What type of project?
                 </h3>
                 <p className="text-lg text-gray-600">
@@ -613,8 +614,8 @@ export default function WindowsLeadForm() {
                     <button
                         key={option.value}
                         className={`p-4 w-full text-left rounded-xl border transition-all duration-150 hover:shadow ${formData.projectType === option.value
-                            ? 'border-purple-500 bg-purple-50 text-purple-700'
-                            : 'border-gray-200 bg-white hover:border-purple-300'
+                            ? 'border-blue-500 bg-blue-50 text-blue-700'
+                            : 'border-gray-200 bg-white hover:border-blue-300'
                             }`}
                         type="button"
                         onClick={() => {
@@ -626,7 +627,7 @@ export default function WindowsLeadForm() {
                         <div className="flex justify-between items-center">
                             <span className="text-lg font-medium">{option.label}</span>
                             {formData.projectType === option.value && (
-                                <div className="flex justify-center items-center w-6 h-6 bg-purple-500 rounded-full">
+                                <div className="flex justify-center items-center w-6 h-6 bg-blue-500 rounded-full">
                                     <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
                                         <path clipRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fillRule="evenodd" />
                                     </svg>
@@ -654,7 +655,7 @@ export default function WindowsLeadForm() {
     const renderStep5 = () => (
         <div className="mx-auto space-y-8 max-w-lg">
             <div className="space-y-3 text-center">
-                <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-900 to-purple-700">
+                <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-900 to-sky-600">
                     Your Contact Information
                 </h3>
                 <p className="text-lg text-gray-600">
@@ -671,7 +672,7 @@ export default function WindowsLeadForm() {
                         <input
                             className={`px-4 py-3 w-full rounded-2xl border-2 shadow-sm backdrop-blur-sm transition-all duration-200 outline-none focus:ring-4 hover:shadow-md bg-white/50 ${errors.firstName
                                 ? 'border-red-300 focus:border-red-500 focus:ring-red-100'
-                                : 'border-gray-200 focus:border-purple-500 focus:ring-purple-100'
+                                : 'border-gray-200 focus:border-blue-500 focus:ring-blue-100'
                                 }`}
                             id="firstName"
                             placeholder="John"
@@ -688,7 +689,7 @@ export default function WindowsLeadForm() {
                         <input
                             className={`px-4 py-3 w-full rounded-2xl border-2 shadow-sm backdrop-blur-sm transition-all duration-200 outline-none focus:ring-4 hover:shadow-md bg-white/50 ${errors.lastName
                                 ? 'border-red-300 focus:border-red-500 focus:ring-red-100'
-                                : 'border-gray-200 focus:border-purple-500 focus:ring-purple-100'
+                                : 'border-gray-200 focus:border-blue-500 focus:ring-blue-100'
                                 }`}
                             id="lastName"
                             placeholder="Smith"
@@ -708,7 +709,7 @@ export default function WindowsLeadForm() {
                         <input
                             className={`px-4 py-3 w-full rounded-2xl border-2 shadow-sm backdrop-blur-sm transition-all duration-200 outline-none focus:ring-4 hover:shadow-md bg-white/50 ${errors.phone
                                 ? 'border-red-300 focus:border-red-500 focus:ring-red-100'
-                                : 'border-gray-200 focus:border-purple-500 focus:ring-purple-100'
+                                : 'border-gray-200 focus:border-blue-500 focus:ring-blue-100'
                                 }`}
                             id="phone"
                             placeholder="(555) 123-4567"
@@ -725,7 +726,7 @@ export default function WindowsLeadForm() {
                         <input
                             className={`px-4 py-3 w-full rounded-2xl border-2 shadow-sm backdrop-blur-sm transition-all duration-200 outline-none focus:ring-4 hover:shadow-md bg-white/50 ${errors.email
                                 ? 'border-red-300 focus:border-red-500 focus:ring-red-100'
-                                : 'border-gray-200 focus:border-purple-500 focus:ring-purple-100'
+                                : 'border-gray-200 focus:border-blue-500 focus:ring-blue-100'
                                 }`}
                             id="email"
                             placeholder="john@email.com"
@@ -749,7 +750,7 @@ export default function WindowsLeadForm() {
                 <button
                     ref={continueButtonRef}
                     className={`flex-1 py-3.5 px-4 text-base font-semibold rounded-xl transition-all duration-150 transform ${canProceedStep5()
-                        ? 'text-white bg-gradient-to-r from-purple-900 to-purple-900 shadow hover:from-purple-700 hover:to-purple-800 hover:shadow-md hover:scale-[1.02]'
+                        ? 'text-white bg-gradient-to-r from-blue-700 via-blue-600 to-sky-500 shadow hover:from-blue-600 hover:to-sky-500 hover:shadow-lg hover:scale-[1.02]'
                         : 'text-gray-400 bg-gray-200 cursor-not-allowed'
                         }`}
                     disabled={!canProceedStep5()}
@@ -766,7 +767,7 @@ export default function WindowsLeadForm() {
     const renderStep6 = () => (
         <div className="mx-auto space-y-8 max-w-lg">
             <div className="space-y-3 text-center">
-                <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-900 to-purple-700">
+                <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-900 to-sky-600">
                     Almost done!
                 </h3>
                 <p className="text-lg text-gray-600">
@@ -784,7 +785,7 @@ export default function WindowsLeadForm() {
                     <input
                         className={`px-4 py-3 w-full rounded-2xl border-2 shadow-sm backdrop-blur-sm transition-all duration-200 outline-none focus:ring-4 hover:shadow-md bg-white/50 ${errors.address
                             ? 'border-red-300 focus:border-red-500 focus:ring-red-100'
-                            : 'border-gray-200 focus:border-purple-500 focus:ring-purple-100'
+                            : 'border-gray-200 focus:border-blue-500 focus:ring-blue-100'
                             }`}
                         id="address"
                         placeholder="123 Main Street"
@@ -803,7 +804,7 @@ export default function WindowsLeadForm() {
                         <input
                             className={`px-4 py-3 w-full rounded-2xl border-2 shadow-sm backdrop-blur-sm transition-all duration-200 outline-none focus:ring-4 hover:shadow-md bg-white/50 ${errors.city
                                 ? 'border-red-300 focus:border-red-500 focus:ring-red-100'
-                                : 'border-gray-200 focus:border-purple-500 focus:ring-purple-100'
+                                : 'border-gray-200 focus:border-blue-500 focus:ring-blue-100'
                                 }`}
                             id="city"
                             placeholder="Your city"
@@ -820,7 +821,7 @@ export default function WindowsLeadForm() {
                         <select
                             className={`px-4 py-3 w-full rounded-2xl border-2 shadow-sm backdrop-blur-sm transition-all duration-200 outline-none focus:ring-4 hover:shadow-md bg-white/50 ${errors.state
                                 ? 'border-red-300 focus:border-red-500 focus:ring-red-100'
-                                : 'border-gray-200 focus:border-purple-500 focus:ring-purple-100'
+                                : 'border-gray-200 focus:border-blue-500 focus:ring-blue-100'
                                 }`}
                             id="state"
                             value={formData.state}
@@ -838,16 +839,16 @@ export default function WindowsLeadForm() {
                 </div>
 
                 {/* Enhanced TCPA Consent */}
-                <div className={`p-4 bg-gradient-to-br from-purple-50/80 via-indigo-50/80 to-purple-50/80 rounded-lg border transition-all duration-150 hover:shadow ${errors.tcpaConsent ? 'border-red-400 bg-red-50/30' : 'border-purple-200/50'
+                <div className={`p-4 bg-gradient-to-br from-blue-50/80 via-slate-50/80 to-blue-50/80 rounded-lg border transition-all duration-150 hover:shadow ${errors.tcpaConsent ? 'border-red-400 bg-red-50/30' : 'border-blue-200/50'
                     }`}>
                     <label className="flex gap-3 items-start cursor-pointer group" htmlFor="tcpaConsent" id="leadid_tcpa_disclosure">
                         <span className="sr-only">I agree to the TCPA terms and consent to be contacted</span>
                         <div className="relative flex-shrink-0">
                             <input
                                 checked={formData.tcpaConsent}
-                                className={`mt-0.5 w-4 h-4 text-purple-900 rounded border transition-all duration-300 cursor-pointer ${errors.tcpaConsent
+                                className={`mt-0.5 w-4 h-4 text-blue-900 rounded border transition-all duration-300 cursor-pointer ${errors.tcpaConsent
                                     ? 'border-red-400 focus:ring-red-200'
-                                    : 'border-purple-300 focus:ring-purple-200 group-hover:border-purple-500'
+                                    : 'border-blue-300 focus:ring-blue-200 group-hover:border-blue-500'
                                     }`}
                                 id="tcpaConsent"
                                 type="checkbox"
@@ -875,7 +876,7 @@ export default function WindowsLeadForm() {
                 <button
                     ref={submitButtonRef}
                     className={`flex-1 py-3.5 px-4 text-base font-semibold rounded-xl transition-all duration-150 transform ${!isSubmitting
-                        ? 'text-white bg-gradient-to-r from-green-500 to-green-600 shadow hover:from-green-600 hover:to-green-700 hover:shadow-md hover:scale-[1.02]'
+                        ? 'text-white bg-gradient-to-r from-blue-700 via-blue-600 to-sky-500 shadow hover:from-blue-600 hover:to-sky-500 hover:shadow-lg hover:scale-[1.02]'
                         : 'text-gray-400 bg-gray-200 cursor-not-allowed'
                         }`}
                     disabled={isSubmitting}

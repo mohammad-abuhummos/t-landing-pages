@@ -1,83 +1,117 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { siteConfig } from "@/config/site";
 import { Button } from "@heroui/button";
 
+import { siteConfig } from "@/config/site";
+
 export default function Footer() {
+
     return (
-        <footer className="text-white bg-gradient-to-b from-slate-900 via-slate-950 to-black border-t border-slate-800/50">
-            <div className="container px-4 py-12 mx-auto">
-                {/* Company Logo and Partners Link */}
-                <div className="flex flex-col items-center mb-10">
-                    <Link className="flex flex-col items-center gap-3 mb-6 group transition-transform duration-200 hover:scale-105" href="/">
-                        <span className="text-2xl font-bold bg-gradient-to-r from-purple-900 via-purple-500 to-purple-300 bg-clip-text text-transparent">
-                            trafficom.co
-                        </span>
-                    </Link>
-                    
-                    {/* Services Links */}
-                    <div className="flex flex-wrap gap-6 justify-center mb-6">
-                        {siteConfig.navItems.map((item) => (
-                            <Link
-                                key={item.href}
-                                className="text-sm text-gray-400 hover:text-purple-300 transition-colors duration-200"
-                                href={item.href}
+        <footer className="bg-gradient-to-b from-white to-white border-t via-blue-50/40 border-slate-200 text-slate-900">
+            <div className="container px-4 py-16 mx-auto space-y-12">
+                <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr]">
+                    <div className="overflow-hidden relative p-8 rounded-3xl border shadow-xl border-white/70 bg-white/80 shadow-blue-100">
+                        <div className="flex flex-wrap gap-4 items-center">
+                            <span className="flex justify-center items-center w-20 h-20 bg-white rounded-2xl border border-blue-100">
+                                <Image
+                                    alt="Full Home Remodeling logo"
+                                    className="object-contain w-16 h-16"
+                                    height={64}
+                                    src="/logos/logo.png"
+                                    width={64}
+                                />
+                            </span>
+                            <div>
+                                <Link className="text-2xl font-semibold text-slate-900" href="/">
+                                    fullhomeremodeling.us
+                                </Link>
+                                <p className="text-sm text-slate-500">
+                                    Premier marketplace for vetted home renovation partners nationwide.
+                                </p>
+                            </div>
+                        </div>
+                        <p className="mt-6 text-lg text-slate-700">
+                            Work with regional leaders in windows, roofing, bathroom, solar, and flooring upgrades built to elevate modern living.
+                        </p>
+                        <div className="flex flex-wrap gap-4 items-center mt-8">
+                            <Button
+                                as={Link}
+                                className="text-sm font-semibold text-white shadow-lg shadow-blue-400/40"
+                                color="primary"
+                                href="/partners"
+                                radius="full"
+                                variant="solid"
                             >
-                                {item.label}
-                            </Link>
-                        ))}
+                                View our partners
+                            </Button>
+                            <span className="text-sm text-slate-500">
+                                Curated network • Nationwide coverage
+                            </span>
+                        </div>
+                        <div className="grid gap-3 mt-10 text-sm text-slate-600 sm:grid-cols-2">
+                            <div className="flex gap-2 items-center px-4 py-3 rounded-2xl border border-slate-200/70 bg-white/70">
+                                <span className="w-2 h-2 bg-emerald-400 rounded-full" />
+                                Average install timelines under 30 days
+                            </div>
+                            <div className="flex gap-2 items-center px-4 py-3 rounded-2xl border border-slate-200/70 bg-white/70">
+                                <span className="w-2 h-2 bg-blue-400 rounded-full" />
+                                Financing & warranty support included
+                            </div>
+                        </div>
+                        <div className="pointer-events-none absolute inset-y-0 right-[-40%] hidden rotate-6 rounded-full bg-blue-100/60 blur-3xl lg:block" />
                     </div>
 
-                    <Button
-                        as={Link}
-                        className="text-sm font-medium text-white bg-purple-600/20 hover:bg-purple-600/40 border border-purple-500/30"
-                        href="/partners"
-                        variant="flat"
-                        radius="full"
-                    >
-                        View Our Partners
-                    </Button>
+                    <div className="grid gap-10 sm:grid-cols-2">
+                        <div>
+                            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                                Services
+                            </p>
+                            <div className="grid grid-cols-2 gap-3 mt-4 text-sm">
+                                {siteConfig.navItems.map((item) => (
+                                    <Link
+                                        key={item.href}
+                                        className="px-4 py-3 font-medium rounded-xl transition-colors bg-white/60 text-slate-700 hover:bg-blue-50 hover:text-blue-700"
+                                        href={item.href}
+                                    >
+                                        {item.label}
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="p-6 rounded-2xl border shadow-sm border-slate-200 bg-white/80">
+                            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                                Contact
+                            </p>
+                            <div className="mt-4 space-y-2 text-sm text-slate-600">
+                                <Link className="text-base font-semibold text-slate-800 hover:text-blue-600" href="mailto:hello@fullhomeremodeling.us">
+                                    hello@fullhomeremodeling.us
+                                </Link>
+                                <p>Mon – Fri · 9am to 6pm ET</p>
+                                <p className="text-slate-500">
+                                    1580 Market Street, Suite 300
+                                    <br />
+                                    San Francisco, CA 94102
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                {/* Legal Links */}
-                <div className="flex flex-wrap gap-4 justify-center items-center mb-8 text-xs text-gray-500">
-                    <Link className="hover:text-purple-300 transition-colors duration-200" href="/privacy-policy">
-                        Privacy Policy
-                    </Link>
-                    <span className="w-1 h-1 rounded-full bg-gray-700"></span>
-                    <Link className="hover:text-purple-300 transition-colors duration-200" href="/terms-and-conditions">
-                        Terms of Service
-                    </Link>
-                </div>
-
-                {/* Copyright */}
-                <div className="text-center">
-                    <p className="text-xs text-gray-500">
-                        © {new Date().getFullYear()} trafficom.co. All rights reserved.
-                    </p>
+                <div className="flex flex-col gap-4 pt-6 text-sm border-t border-slate-200 text-slate-500 md:flex-row md:items-center md:justify-between">
+                    <div>© {new Date().getFullYear()} fullhomeremodeling.us · All rights reserved.</div>
+                    <div className="flex flex-wrap gap-4">
+                        <Link className="transition-colors hover:text-blue-600" href="/privacy-policy">
+                            Privacy Policy
+                        </Link>
+                        <Link className="transition-colors hover:text-blue-600" href="/terms-and-conditions">
+                            Terms & Conditions
+                        </Link>
+                    </div>
                 </div>
             </div>
         </footer>
     );
 }
-
-// Logo Component
-function LogoIcon({ className }: { className?: string }) {
-    return (
-        <svg
-            className={className}
-            fill="none"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <path
-                d="M3 12H21M3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12M3 12C3 16.9706 7.02944 21 12 21C16.9706 21 21 16.9706 21 12M21 12L17 8M21 12L17 16"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-            />
-        </svg>
-    );
-} 

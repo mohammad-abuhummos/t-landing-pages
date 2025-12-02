@@ -6,20 +6,20 @@ export default function AppLogo({ size = 40 }: { size?: number }) {
 
         // Map verticals to their logo files
         const logoMap: Record<string, string> = {
-            "bathroom": "/logos/bathroom.png",
-            "new-bathroom": "/logos/bathroom.png",
-            "flooring": "/logos/flooring.png",
-            "new-flooring": "/logo.svg",
-            "roofing": "/logos/roofing.png",
-            "new-roofing": "/logo.svg",
-            "windows": "/logos/windows.png",
-            "new-windows": "/logos/windows.png",
-            "solar": "/logos/solar.png",
-            "new-solar": "/logos/solar.png",
+            "bathroom": "/logos/logo.png",
+            "new-bathroom": "/logos/logo.png",
+            "flooring": "/logos/logo.png",
+            "new-flooring": "/logos/logo.png",
+            "roofing": "/logos/logo.png",
+            "new-roofing": "/logos/logo.png",
+            "windows": "/logos/logo.png",
+            "new-windows": "/logos/logo.png",
+            "solar": "/logos/logo.png",
+            "new-solar": "/logos/logo.png",
         };
 
         // Return specific logo if vertical matches, otherwise default logo
-        return logoMap[vertical || ""] || "/trafficom-icon-svg.svg";
+        return logoMap[vertical || ""] || "/logos/logo.png";
     };
 
     const getLogoAlt = () => {

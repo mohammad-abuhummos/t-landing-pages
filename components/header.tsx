@@ -25,12 +25,12 @@ function getDomainName() {
 export default function Header() {
 
     return (
-        <header className="bg-white/95 backdrop-blur-md shadow-lg shadow-purple-500/10 fixed w-full top-0 z-50 border-b border-purple-100 transition-all duration-300">
+        <header className="relative top-0 z-50 w-full border-b border-purple-100 backdrop-blur-md transition-all duration-300 bg-white/95">
             <nav className="container px-6 mx-auto">
-                <div className="flex items-center justify-center h-20">
+                <div className="flex justify-center items-center h-20">
                     {/* Logo */}
                     <div className="flex-shrink-0">
-                        <Link className="block group transition-all duration-300 hover:scale-105 hover:opacity-90" href="/">
+                        <Link className="block transition-all duration-300 group hover:scale-105 hover:opacity-90" href="/">
                             <AppLogo size={220} />
                         </Link>
                     </div>
